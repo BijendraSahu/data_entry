@@ -29,6 +29,11 @@
     <script src="{{url('assets/js/Autocomplete.js')}}"></script>
     <script src="{{url('assets/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{url('assets/js/dataTables.bootstrap.min.js')}}"></script>
+    {{---------------Notification---------------}}
+    <link rel="stylesheet" href="{{url('assets/css/lobibox.min.css')}}">
+    <script src="{{url('assets/js/notifications.min.js')}}"></script>
+    <script src="{{url('assets/js/notification-custom-script.js')}}"></script>
+    {{---------------Notification---------------}}
     <script type="text/javascript">
         function GetandSetOnEditor() {
             var htm = $("#txtEditor").Editor("getText");
@@ -561,7 +566,7 @@
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
                 url: editurl,
-                data: '{"data":"' + id + '"}',
+                data: {data: id},
                 success: function (data) {
                     $('#mybody').html(data);
                     $('#myModal').modal();
@@ -942,15 +947,20 @@
         <img src="{{url('assets/images/short.png')}}" class="small_aside_icon"/>
     </div>
     <div class="dash_emp_details">
-        <img src="{{url('u_img').'/'.$loginUser->image}}"
-             class="dash_profile_img"/>
+        @if(isset($LohinUser))
+            <img src="{{url('u_img').'/'.$loginUser->image}}"
+                 class="dash_profile_img"/>
+        @else
+            <img class="dash_profile_img"
+                 src="{{url('assets/images/Male_default.png')}}"/>
+        @endif
         <div class="dash_emp_basic">
             <span class="dash_name">{{ucfirst($_SESSION['admin_master']['name'])}}</span>
             {{--<span class="dash_designation">Admin</span>--}}
         </div>
     </div>
     <ul class="list-group dash_menu_ul">
-        @if($loginUser->id == 1)
+        @if($loginUser->role == 'Super Admin')
             <li class="right_menu_li">
                 <a href="{{url('admin')}}">
                     {{--     <a href="{{url('/userlist')}}">--}}
@@ -959,132 +969,156 @@
                 </a>
             </li>
             <li class="right_menu_li">
-                <a href="{{url('franchise')}}">
+                <a href="{{url('user_master?type=user')}}">
+                    <i class="dash_arrow mdi mdi-account-multiple global_color"></i>
+                    <span class="aside_menu_txt">All Users</span></a>
+            </li>
+            <li class="right_menu_li">
+                <a href="{{url('user_master?type=admin')}}">
+                    <i class="dash_arrow mdi mdi-clipboard-plus global_color"></i>
+                    <span class="aside_menu_txt">Group Admin</span>
+                </a>
+            </li>
+            <li class="right_menu_li">
+                <a href="{{url('work_done')}}">
+                    <i class="dash_arrow mdi mdi-clipboard-plus global_color"></i>
+                    <span class="aside_menu_txt">Work Done</span>
+                </a>
+            </li>
+        @elseif($loginUser->role == 'Group Admin')
+            <li class="right_menu_li">
+                <a href="{{url('admin')}}">
                     {{--     <a href="{{url('/userlist')}}">--}}
                     <i class="dash_arrow mdi mdi-account-multiple global_color"></i>
-                    <span class="aside_menu_txt">Franchise</span>
+                    <span class="aside_menu_txt">Dashboard</span>
                 </a>
             </li>
-
-            <li class="right_menu_li" onclick="MenuClick(this);">
-                <a href="javascript:;">
-                    <i class="dash_arrow mdi mdi-sitemap  global_color"></i>
-                    Users
-                    <i class="mdi mdi-chevron-right icon-left-arrow"></i>
-                </a>
-                <ul class="list-group dash_sub_menu">
-                    <li>
-                        <a href="{{url('user_master')}}">
-                            All Users
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{url('user_master?type=active')}}">
-                            Active Users
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{url('user_master?type=inactive')}}">
-                            InActive Users
-                        </a>
-                    </li>
-                </ul>
+            <li class="right_menu_li">
+                <a href="{{url('user_master?type=user')}}">
+                    <i class="dash_arrow mdi mdi-account-multiple global_color"></i>
+                    <span class="aside_menu_txt">All Users</span></a>
             </li>
-
-            {{--<li class="right_menu_li">--}}
+            <li class="right_menu_li">
+                <a href="{{url('work_done')}}">
+                    <i class="dash_arrow mdi mdi-clipboard-plus global_color"></i>
+                    <span class="aside_menu_txt">Work Done</span>
+                </a>
+            </li>
+            {{--<li class="right_menu_li" onclick="MenuClick(this);">--}}
+            {{--<a href="javascript:;">--}}
+            {{--<i class="dash_arrow mdi mdi-sitemap  global_color"></i>--}}
+            {{--Users--}}
+            {{--<i class="mdi mdi-chevron-right icon-left-arrow"></i>--}}
+            {{--</a>--}}
+            {{--<ul class="list-group dash_sub_menu">--}}
+            {{--<li>--}}
             {{--<a href="{{url('user_master')}}">--}}
-            {{--     <a href="{{url('/userlist')}}">--}}
-            {{--<i class="dash_arrow mdi mdi-account-multiple global_color"></i>--}}
-            {{--<span class="aside_menu_txt">All Users</span>--}}
+            {{--All Users--}}
             {{--</a>--}}
             {{--</li>--}}
-
-            {{--<li class="right_menu_li">--}}
+            {{--<li>--}}
             {{--<a href="{{url('user_master?type=active')}}">--}}
-            {{--     <a href="{{url('/userlist')}}">--}}
-            {{--<i class="dash_arrow mdi mdi-account-multiple global_color"></i>--}}
-            {{--<span class="aside_menu_txt">Active Users</span>--}}
+            {{--Active Users--}}
+            {{--</a>--}}
+            {{--</li>--}}
+            {{--<li>--}}
+            {{--<a href="{{url('user_master?type=inactive')}}">--}}
+            {{--InActive Users--}}
+            {{--</a>--}}
+            {{--</li>--}}
+            {{--</ul>--}}
+            {{--</li>--}}
+
+            {{--<li class="right_menu_li" onclick="MenuClick(this);">--}}
+            {{--<a href="javascript:;">--}}
+            {{--<i class="dash_arrow mdi mdi-sitemap  global_color"></i>--}}
+            {{--Users--}}
+            {{--<i class="mdi mdi-chevron-right icon-left-arrow"></i>--}}
+            {{--</a>--}}
+            {{--<ul class="list-group dash_sub_menu">--}}
+            {{--<li>--}}
+            {{--<a href="{{url('user_master')}}">--}}
+            {{--All Users--}}
+            {{--</a>--}}
+            {{--</li>--}}
+            {{--<li>--}}
+            {{--<a href="{{url('user_master?type=active')}}">--}}
+            {{--Active Users--}}
+            {{--</a>--}}
+            {{--</li>--}}
+            {{--<li>--}}
+            {{--<a href="{{url('user_master?type=inactive')}}">--}}
+            {{--InActive Users--}}
+            {{--</a>--}}
+            {{--</li>--}}
+            {{--</ul>--}}
+            {{--</li>--}}
+
+
+
+            {{--<li class="right_menu_li">--}}
+            {{--<a href="{{url('/delivery')}}">--}}
+            {{--@php--}}
+            {{--$redeem_request = \App\RedeemRequest::where(['status'=>'pending'])->count();--}}
+            {{--@endphp--}}
+            {{--<a href="{{url('redeem_requests')}}">--}}
+            {{--<i class="dash_arrow mdi mdi-gift global_color"></i>--}}
+            {{--<span class="aside_menu_txt">Redeem Requests--}}
+            {{--@if($redeem_request >0)--}}
+            {{--<span class="badge">{{0}}</span>--}}
+            {{--@endif--}}
+            {{--</span>--}}
+            {{--</a>--}}
+            {{--</li>--}}
+
+            {{--<li class="right_menu_li">--}}
+            {{--<a href="{{url('/review')}}">--}}
+            {{--<a href="{{url('gain_type_points')}}">--}}
+            {{--<i class="dash_arrow mdi mdi-forum global_color"></i>--}}
+            {{--<span class="aside_menu_txt">Gain Type Points</span>--}}
             {{--</a>--}}
             {{--</li>--}}
             {{--<li class="right_menu_li">--}}
-            {{--<a href="{{url('user_master?type=inactive')}}">--}}
-            {{--     <a href="{{url('/userlist')}}">--}}
-            {{--<i class="dash_arrow mdi mdi-account-multiple global_color"></i>--}}
-            {{--<span class="aside_menu_txt">InActive Users</span>--}}
+            {{--<a href="{{url('/review')}}">--}}
+            {{--<a href="{{url('key')}}">--}}
+            {{--<i class="dash_arrow mdi mdi-forum global_color"></i>--}}
+            {{--<span class="aside_menu_txt">Key</span>--}}
+            {{--</a>--}}
+            {{--</li>--}}
+            {{--<li class="right_menu_li">--}}
+            {{-- <a href="{{url('/orderlist')}}">--}}
+            {{--<a href="{{url('news')}}">--}}
+            {{--<i class="dash_arrow mdi mdi-clipboard-plus global_color"></i>--}}
+            {{--<span class="aside_menu_txt">News</span>--}}
             {{--</a>--}}
             {{--</li>--}}
 
-            <li class="right_menu_li">
-                {{-- <a href="{{url('/orderlist')}}">--}}
-                <a href="{{url('advertisement')}}">
-                    <i class="dash_arrow mdi mdi-clipboard-plus global_color"></i>
-                    <span class="aside_menu_txt">Advertisements</span>
-                </a>
-            </li>
-
-            <li class="right_menu_li">
-                {{--<a href="{{url('/delivery')}}">--}}
-                {{--@php--}}
-                {{--$redeem_request = \App\RedeemRequest::where(['status'=>'pending'])->count();--}}
-                {{--@endphp--}}
-                <a href="{{url('redeem_requests')}}">
-                    <i class="dash_arrow mdi mdi-gift global_color"></i>
-                    <span class="aside_menu_txt">Redeem Requests
-                        {{--@if($redeem_request >0)--}}
-                        <span class="badge">{{0}}</span>
-                        {{--@endif--}}
-                    </span>
-                </a>
-            </li>
-
-            <li class="right_menu_li">
-                {{--<a href="{{url('/review')}}">--}}
-                <a href="{{url('gain_type_points')}}">
-                    <i class="dash_arrow mdi mdi-forum global_color"></i>
-                    <span class="aside_menu_txt">Gain Type Points</span>
-                </a>
-            </li>
-            <li class="right_menu_li">
-                {{--<a href="{{url('/review')}}">--}}
-                <a href="{{url('key')}}">
-                    <i class="dash_arrow mdi mdi-forum global_color"></i>
-                    <span class="aside_menu_txt">Key</span>
-                </a>
-            </li>
-            <li class="right_menu_li">
-                {{-- <a href="{{url('/orderlist')}}">--}}
-                <a href="{{url('news')}}">
-                    <i class="dash_arrow mdi mdi-clipboard-plus global_color"></i>
-                    <span class="aside_menu_txt">News</span>
-                </a>
-            </li>
-
-            <li class="right_menu_li">
-                {{-- <a href="{{url('/orderlist')}}">--}}
-                <a href="{{url('gallery_master')}}">
-                    <i class="dash_arrow mdi mdi-clipboard-plus global_color"></i>
-                    <span class="aside_menu_txt">Gallery</span>
-                </a>
-            </li>
-            <li class="right_menu_li" onclick="MenuClick(this);">
-                <a href="javascript:;">
-                    <i class="dash_arrow mdi mdi-sitemap  global_color"></i>
-                    Reports
-                    <i class="mdi mdi-chevron-right icon-left-arrow"></i>
-                </a>
-                <ul class="list-group dash_sub_menu">
-                    <li>
-                        <a href="{{url('user_by_franchise')}}">
-                            Users by franchise
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{url('distribution')}}">
-                            Amount Distributions
-                        </a>
-                    </li>
-                </ul>
-            </li>
+            {{--<li class="right_menu_li">--}}
+            {{-- <a href="{{url('/orderlist')}}">--}}
+            {{--<a href="{{url('gallery_master')}}">--}}
+            {{--<i class="dash_arrow mdi mdi-clipboard-plus global_color"></i>--}}
+            {{--<span class="aside_menu_txt">Gallery</span>--}}
+            {{--</a>--}}
+            {{--</li>--}}
+            {{--<li class="right_menu_li" onclick="MenuClick(this);">--}}
+            {{--<a href="javascript:;">--}}
+            {{--<i class="dash_arrow mdi mdi-sitemap  global_color"></i>--}}
+            {{--Reports--}}
+            {{--<i class="mdi mdi-chevron-right icon-left-arrow"></i>--}}
+            {{--</a>--}}
+            {{--<ul class="list-group dash_sub_menu">--}}
+            {{--<li>--}}
+            {{--<a href="{{url('user_by_franchise')}}">--}}
+            {{--Users by franchise--}}
+            {{--</a>--}}
+            {{--</li>--}}
+            {{--<li>--}}
+            {{--<a href="{{url('distribution')}}">--}}
+            {{--Amount Distributions--}}
+            {{--</a>--}}
+            {{--</li>--}}
+            {{--</ul>--}}
+            {{--</li>--}}
 
         @else
             <li class="right_menu_li">
@@ -1095,19 +1129,13 @@
                 </a>
             </li>
             <li class="right_menu_li">
-                <a href="{{url('user_master?type=inactive')}}">
+                <a href="{{url('start_work')}}">
                     {{--     <a href="{{url('/userlist')}}">--}}
                     <i class="dash_arrow mdi mdi-account-multiple global_color"></i>
-                    <span class="aside_menu_txt">InActive Users</span>
+                    <span class="aside_menu_txt">Start Work</span>
                 </a>
             </li>
-            <li class="right_menu_li">
-                {{--<a href="{{url('/review')}}">--}}
-                <a href="{{url('franchise_keys')}}">
-                    <i class="dash_arrow mdi mdi-forum global_color"></i>
-                    <span class="aside_menu_txt">Keys</span>
-                </a>
-            </li>
+
         @endif
     </ul>
 
@@ -1141,6 +1169,7 @@
         $('.datatable-col').on('keyup change', function () {
             table.column($(this).attr('id')).search($(this).val()).draw();
         });
+        $("form").attr('autocomplete', 'off');
     });
 
     $('.fab').hover(function () {
@@ -1148,15 +1177,16 @@
     });
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
-    })
+    });
+
 </script>
 
 @if(session()->has('message'))
     <script type="text/javascript">
         setTimeout(function () {
             {{--            ShowSuccessPopupMsg('{{ session()->get('message') }}');--}}
-            swal("Success!", "{{ session()->get('message') }}", "success");
-
+            {{--swal("Success!", "{{ session()->get('message') }}", "success");--}}
+            success_noti("{{ session()->get('message') }}");
         }, 500);
 
 

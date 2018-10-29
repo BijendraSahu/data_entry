@@ -21,30 +21,41 @@ class UserMasterController extends Controller
 {
     public function index()
     {
-        if (request('type') == '') {
+        if (request('type') == 'user') {
             return view('user.view_user_master')->with('user_masters', UserMaster::getActiveUserMaster());
-        } elseif (request('type') == 'active') {
-            return view('user.view_user_master')->with('user_masters', UserMaster::getPaidUserMaster());
         } else {
-            return view('user.view_user_master')->with('user_masters', UserMaster::getUnPaidUserMaster());
+            return view('user.view_user_master')->with('user_masters', UserMaster::getActiveAdmin());
         }
     }
 
-
-    public function active_user()
+    public function create()
     {
-        return view('user.view_user_master')->with('user_masters', UserMaster::getActiveUserMaster());
+        $role_masters = RoleMaster::getRoleDropdown();
+        return view('user.create_user_master')->with(['role_masters' => $role_masters]);
     }
 
+    public function store(Request $request)
+    {
+        $user_master = new UserMaster();
+        if (!$user_master->checkUsername(request('username'))) {
+            return Redirect::back()->withInput()->withErrors('Username already exists in the system. Please type a different username.');
+        }
+        $user = new UserMaster();
+        $user->name = request('name');
+        $user->contact = request('contact');
+        $user->username = request('username');
+        $user->password = md5(request('password'));
+        $user->role_master_id = request('role_master_id');
+        $user->save();
+        return Redirect::back()->with('message', 'User has been added...!');
+    }
 
     public function edit($id)
     {
+        $role_masters = RoleMaster::getRoleDropdown();
         $user_master = UserMaster::find($id);
-        $sponsers = UserMaster::getUserDropdown();
-        $bank = UserBankDetails::where(['user_id' => $id])->first();
-        return view('user.edit_user_master')->with(['user_master' => $user_master, 'sponsers' => $sponsers, 'bank' => $bank]);
+        return view('user.edit_user_master')->with(['user_master' => $user_master, 'role_masters' => $role_masters]);
     }
-
 
     public function update($id, Request $request)
     {
@@ -52,32 +63,58 @@ class UserMasterController extends Controller
         $user_master = UserMaster::find($id);
         $user_master->name = request('name');
         $user_master->contact = request('contact');
-        $user_master->paytm_contact = request('paytm_contact');
-        $user_master->address = request('address');
-//        $user_master->activated_by = request('activated_by');
+        $user_master->role_master_id = request('role_master_id');
         $user_master->save();
-
-        if (request('account_holder') != null) {
-            $bank = UserBankDetails::where(['user_id' => $id])->first();
-            $bank->account_holder = request('account_holder');
-            $bank->ac_number = request('ac_number');
-            $bank->bank = request('bank');
-            $bank->aadhar_pan = request('aadhar_pan');
-            $bank->ifsc_code = request('ifsc_code');
-            $bank->save();
-        }
-
-        $r_user = UserMaster::find(request('reffer_by'));
-        $checkRefPoint = DB::select("SELECT * FROM `reffer` WHERE (reffer_by = $r_user->id and reffer_to = $user_master->id or reffer_by = $user_master->id and reffer_to = $r_user->id) or reffer_to = $user_master->id");
-        if (count($checkRefPoint) < 1) {
-            $reffer = new Reffer();
-            $reffer->reffer_by = $r_user->id;
-            $reffer->reffer_to = $user_master->id;
-            $reffer->save();
-            GainTypePoints::get_gain_type_points($r_user->id, 'referral');
-        }
         return redirect('/user_master')->with('message', 'User has been updated...!');
     }
+
+    public function active_user()
+    {
+        return view('user.view_user_master')->with('user_masters', UserMaster::getActiveUserMaster());
+    }
+
+
+//    public function edit($id)
+//    {
+//        $user_master = UserMaster::find($id);
+//        $sponsers = UserMaster::getUserDropdown();
+//        $bank = UserBankDetails::where(['user_id' => $id])->first();
+//        return view('user.edit_user_master')->with(['user_master' => $user_master, 'sponsers' => $sponsers, 'bank' => $bank]);
+//    }
+
+
+//    public function update($id, Request $request)
+//    {
+//
+//        $user_master = UserMaster::find($id);
+//        $user_master->name = request('name');
+//        $user_master->contact = request('contact');
+//        $user_master->paytm_contact = request('paytm_contact');
+//        $user_master->address = request('address');
+////        $user_master->activated_by = request('activated_by');
+//        $user_master->save();
+//
+//        if (request('account_holder') != null) {
+//            $bank = UserBankDetails::where(['user_id' => $id])->first();
+//            $bank->account_holder = request('account_holder');
+//            $bank->ac_number = request('ac_number');
+//            $bank->bank = request('bank');
+//            $bank->aadhar_pan = request('aadhar_pan');
+//            $bank->ifsc_code = request('ifsc_code');
+//            $bank->save();
+//        }
+//
+//        $r_user = UserMaster::find(request('reffer_by'));
+//        $checkRefPoint = DB::select("SELECT * FROM `reffer` WHERE (reffer_by = $r_user->id and reffer_to = $user_master->id or reffer_by = $user_master->id and reffer_to = $r_user->id) or reffer_to = $user_master->id");
+//        if (count($checkRefPoint) < 1) {
+//            $reffer = new Reffer();
+//            $reffer->reffer_by = $r_user->id;
+//            $reffer->reffer_to = $user_master->id;
+//            $reffer->save();
+//            GainTypePoints::get_gain_type_points($r_user->id, 'referral');
+//        }
+//        return redirect('/user_master')->with('message', 'User has been updated...!');
+//    }
 
     public function destroy($id)
     {
@@ -105,35 +142,34 @@ class UserMasterController extends Controller
     public function activate($id)
     {
 //        echo request('key');
-        $key = UserKey::where(['key_name' => request('key'), 'is_active' => 1])->first();
-        if (isset($key)) {
-            if ($key->remaining > 0) {
-                $key->remaining -= 1;
-                $key->save();
-                $user_master = UserMaster::find($id);
-                $user_master->is_paid = 1;
-                $user_master->paid_time = Carbon::now();
-                $user_master->activated_by = $_SESSION['admin_master']->id;
-                $user_master->save();
-                $title = "Account Activation Successful";
-                $message = "your account has been activated";
-                if (isset($user_master->token)) {
-                    AdminModel::getNotification($user_master->token, $title, $message);
-                }
-                return redirect('/admin')->with('message', 'User is now activated');
-            } else {
-                return Redirect::back()->withInput()->withErrors("You don't have enough key to activate this user");
-            }
-        } else {
-            return Redirect::back()->withInput()->withErrors('Please enter valid key');
-        }
+//        $key = UserKey::where(['key_name' => request('key'), 'is_active' => 1])->first();
+//        if (isset($key)) {
+//            if ($key->remaining > 0) {
+//                $key->remaining -= 1;
+//                $key->save();
+        $user_master = UserMaster::find($id);
+        $user_master->is_active = 1;
+        $user_master->activated_by = $_SESSION['admin_master']->id;
+        $user_master->save();
+//                $title = "Account Activation Successful";
+//                $message = "your account has been activated";
+//                if (isset($user_master->token)) {
+//                    AdminModel::getNotification($user_master->token, $title, $message);
+//                }
+        return redirect('user_master')->with('message', 'User is now activated');
+//            } else {
+//                return Redirect::back()->withInput()->withErrors("You don't have enough key to activate this user");
+//            }
+//        } else {
+//            return Redirect::back()->withInput()->withErrors('Please enter valid key');
+//        }
     }
 
     public function inactivate($id)
     {
         $user_master = UserMaster::find($id);
-        $user_master->is_paid = 0;
-        $user_master->paid_time = null;
+        $user_master->is_active = 0;
+//        $user_master->activated_by = $_SESSION['admin_master']->id;
         $user_master->save();
         return redirect('/user_master')->with('message', 'User is now inactivated...');
     }

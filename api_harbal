@@ -1,66 +1,88 @@
-/*----------------------------Bijendra Sahu---------------------------------*/
-Registration or login
-http://18.188.188.62/harbal/getregister?contact=8989892897
+ALTER TABLE `tbldata` ADD `IS_OPEN` TINYINT NOT NULL DEFAULT '0' COMMENT '1-Work Open In Screen, 0- Work Not Open In Any Screen' AFTER `READTIME`, ADD `IS_WORK_DONE` TINYINT NOT NULL DEFAULT '0' COMMENT '1-Work Completed, 0- Work Incompleted' AFTER `IS_OPEN`;
 
-Verify Contact
-http://18.188.188.62/harbal/verify_otp?otp=123456
+ALTER TABLE `tbldata` ADD `WORK_DONE_BY` INT NULL DEFAULT NULL COMMENT 'User Id Who Done this work' AFTER `IS_WORK_DONE`;
 
-Resend Otp
-http://18.188.188.62/harbal/resend_otp?contact=8989892897
-
-View Ads
-http://18.188.188.62/harbal/getAllAds
-
-Check Referral Code
-http://18.188.188.62/harbal/checkrc?rc=rc5731839
-
-Profile Update(Post method)
-http://18.188.188.62/harbal/edit_profile?user_id=1&paytm_no=9876543210&address=abc&profile_img=base64
-
-My Referral
-http://18.188.188.62/harbal/getMyReferral?user_id=1
-
-view_share_ads_by_user
-http://18.188.188.62/harbal/view_share_ads_by_user?user_id=1&ad_id=1&action=view     //action=view/share
-
-get_user_point
-http://18.188.188.62/harbal/get_user_point?user_id=1
-
-redeem_now
-http://18.188.188.62/harbal/redeem_now?user_id=1
-
-redeem_history
-http://18.188.188.62/harbal/redeem_history?user_id=1
+ALTER TABLE `users` CHANGE `role_master_id` `role` ENUM('Super Admin','Group Admin','Data Entry User') NOT NULL DEFAULT 'Data Entry User';
 
 
-Bank
-http://18.188.188.62/harbal/add_update_bank_details?user_id=1&ac_holder=bijendra&ac_no=564564&bank=sbi&ifsc=ifsc123&pan=JHSKLDH
 
-User record by id
-http://18.188.188.62/harbal/getUserRecord?user_id=1
-
-
-Today Ads Visible Count
-http://18.188.188.62/harbal/getAdsCounts?user_id=1
-
-Bank Details
-http://18.188.188.62/harbal/getBankDetails
-
-Ads Points
-http://18.188.188.62/harbal/getAdsPoints
-
-All News
-http://18.188.188.62/harbal/getAllNews
-
-All Gallery
-http://18.188.188.62/harbal/getAllGallery
-
-/*----------------------------Bijendra Sahu---------------------------------*/
-
-ALTER TABLE `advertisement` CHANGE `video` `file_type` ENUM('img','video','text') CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'img';
-
-ALTER TABLE `advertisement` CHANGE `banner` `file_path` VARCHAR(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
-
-ALTER TABLE `advertisement` ADD `view_points` FLOAT NULL DEFAULT '0' AFTER `text`;
-
-  //18_10
+INSERT INTO `tbldata`(`SRID`, `SHID`, `FRMID`, `DUPID`, `TESTID`, `FILENM`, `READTIME`) VALUES(1, 1519001, N'1', 0, 2, N'd:\BSGP_2018\1001\2_213.jpg', N'25-Oct-2018 6:23:42 PM')
+,(2, 1519001, N'2', 0, 2, N'd:\BSGP_2018\1001\2_214.jpg', N'25-Oct-2018 6:23:44 PM')
+,(3, 1519001, N'3', 0, 2, N'd:\BSGP_2018\1001\2_215.jpg', N'25-Oct-2018 6:23:47 PM')
+,(4, 1519001, N'4', 0, 2, N'd:\BSGP_2018\1001\2_216.jpg', N'25-Oct-2018 6:23:49 PM')
+,(5, 1519001, N'5', 0, 2, N'd:\BSGP_2018\1001\2_217.jpg', N'25-Oct-2018 6:23:52 PM')
+,(6, 1519001, N'6', 0, 2, N'd:\BSGP_2018\1001\2_218.jpg', N'25-Oct-2018 6:23:55 PM')
+,(7, 1519001, N'7', 0, 2, N'd:\BSGP_2018\1001\2_219.jpg', N'25-Oct-2018 6:23:57 PM')
+,(8, 1519001, N'8', 0, 2, N'd:\BSGP_2018\1001\2_220.jpg', N'25-Oct-2018 6:24:00 PM')
+,(9, 1519001, N'9', 0, 2, N'd:\BSGP_2018\1001\2_221.jpg', N'25-Oct-2018 6:24:02 PM')
+,(10, 1519001, N'10', 0, 2, N'd:\BSGP_2018\1001\2_222.jpg', N'25-Oct-2018 6:24:04 PM')
+,(11, 1519001, N'11', 0, 2, N'd:\BSGP_2018\1001\2_223.jpg', N'25-Oct-2018 6:24:07 PM')
+,(12, 1519001, N'12', 0, 2, N'd:\BSGP_2018\1001\2_224.jpg', N'25-Oct-2018 6:24:09 PM')
+,(13, 1519001, N'13', 0, 2, N'd:\BSGP_2018\1001\2_225.jpg', N'25-Oct-2018 6:24:12 PM')
+,(14, 1519001, N'14', 0, 2, N'd:\BSGP_2018\1001\2_226.jpg', N'25-Oct-2018 6:24:14 PM')
+,(15, 1519001, N'15', 0, 2, N'd:\BSGP_2018\1001\2_227.jpg', N'25-Oct-2018 6:24:16 PM')
+,(16, 1519001, N'16', 0, 2, N'd:\BSGP_2018\1001\2_228.jpg', N'25-Oct-2018 6:24:19 PM')
+,(17, 1519001, N'17', 0, 2, N'd:\BSGP_2018\1001\2_229.jpg', N'25-Oct-2018 6:24:21 PM')
+,(18, 1519001, N'18', 0, 2, N'd:\BSGP_2018\1001\2_230.jpg', N'25-Oct-2018 6:24:24 PM')
+,(19, 1519001, N'19', 0, 2, N'd:\BSGP_2018\1001\2_231.jpg', N'25-Oct-2018 6:24:26 PM')
+,(20, 1519001, N'20', 0, 2, N'd:\BSGP_2018\1001\2_232.jpg', N'25-Oct-2018 6:24:29 PM')
+,(21, 1519001, N'21', 0, 2, N'd:\BSGP_2018\1001\2_233.jpg', N'25-Oct-2018 6:24:31 PM')
+,(22, 1519001, N'22', 0, 2, N'd:\BSGP_2018\1001\2_234.jpg', N'25-Oct-2018 6:24:34 PM')
+,(23, 1519001, N'23', 0, 3, N'd:\BSGP_2018\1001\3_235.jpg', N'25-Oct-2018 6:24:36 PM')
+,(24, 1519001, N'24', 0, 3, N'd:\BSGP_2018\1001\3_236.jpg', N'25-Oct-2018 6:24:38 PM')
+,(25, 1519001, N'25', 0, 3, N'd:\BSGP_2018\1001\3_237.jpg', N'25-Oct-2018 6:24:41 PM')
+,(26, 1519001, N'26', 0, 3, N'd:\BSGP_2018\1001\3_238.jpg', N'25-Oct-2018 6:24:43 PM')
+,(27, 1519001, N'27', 0, 3, N'd:\BSGP_2018\1001\3_239.jpg', N'25-Oct-2018 6:24:46 PM')
+,(28, 1519001, N'28', 0, 3, N'd:\BSGP_2018\1001\3_240.jpg', N'25-Oct-2018 6:24:48 PM')
+,(29, 1519001, N'29', 0, 3, N'd:\BSGP_2018\1001\3_241.jpg', N'25-Oct-2018 6:24:51 PM')
+,(30, 1519001, N'30', 0, 3, N'd:\BSGP_2018\1001\3_242.jpg', N'25-Oct-2018 6:24:53 PM')
+,(31, 1519001, N'31', 0, 3, N'd:\BSGP_2018\1001\3_243.jpg', N'25-Oct-2018 6:24:56 PM')
+,(32, 1519001, N'32', 0, 3, N'd:\BSGP_2018\1001\3_244.jpg', N'25-Oct-2018 6:24:59 PM')
+,(33, 1519001, N'33', 0, 3, N'd:\BSGP_2018\1001\3_245.jpg', N'25-Oct-2018 6:25:01 PM')
+,(34, 1519001, N'34', 0, 3, N'd:\BSGP_2018\1001\3_246.jpg', N'25-Oct-2018 6:25:04 PM')
+,(35, 1519001, N'35', 0, 3, N'd:\BSGP_2018\1001\3_247.jpg', N'25-Oct-2018 6:25:06 PM')
+,(36, 1519001, N'36', 0, 3, N'd:\BSGP_2018\1001\3_248.jpg', N'25-Oct-2018 6:25:09 PM')
+,(37, 1519001, N'37', 0, 4, N'd:\BSGP_2018\1001\4_249.jpg', N'25-Oct-2018 6:25:11 PM')
+,(38, 1519001, N'38', 0, 4, N'd:\BSGP_2018\1001\4_250.jpg', N'25-Oct-2018 6:25:14 PM')
+,(39, 1519001, N'39', 0, 4, N'd:\BSGP_2018\1001\4_251.jpg', N'25-Oct-2018 6:25:16 PM')
+,(40, 1519001, N'40', 0, 4, N'd:\BSGP_2018\1001\4_252.jpg', N'25-Oct-2018 6:25:19 PM')
+,(41, 1519001, N'41', 0, 4, N'd:\BSGP_2018\1001\4_253.jpg', N'25-Oct-2018 6:25:21 PM')
+,(42, 1519001, N'42', 0, 4, N'd:\BSGP_2018\1001\4_254.jpg', N'25-Oct-2018 6:25:24 PM')
+,(43, 1519001, N'43', 0, 4, N'd:\BSGP_2018\1001\4_255.jpg', N'25-Oct-2018 6:25:26 PM')
+,(44, 1519001, N'44', 0, 4, N'd:\BSGP_2018\1001\4_256.jpg', N'25-Oct-2018 6:25:29 PM')
+,(45, 1519001, N'45', 0, 4, N'd:\BSGP_2018\1001\4_257.jpg', N'25-Oct-2018 6:25:31 PM')
+,(46, 1519001, N'46', 0, 4, N'd:\BSGP_2018\1001\4_258.jpg', N'25-Oct-2018 6:25:34 PM')
+,(47, 1519001, N'47', 0, 4, N'd:\BSGP_2018\1001\4_259.jpg', N'25-Oct-2018 6:25:36 PM')
+,(48, 1519001, N'48', 0, 4, N'd:\BSGP_2018\1001\4_260.jpg', N'25-Oct-2018 6:25:39 PM')
+,(49, 1519001, N'49', 0, 4, N'd:\BSGP_2018\1001\4_261.jpg', N'25-Oct-2018 6:25:41 PM')
+,(50, 1519001, N'50', 0, 4, N'd:\BSGP_2018\1001\4_262.jpg', N'25-Oct-2018 6:25:44 PM')
+,(51, 1519001, N'51', 0, 4, N'd:\BSGP_2018\1001\4_263.jpg', N'25-Oct-2018 6:25:46 PM')
+,(52, 1519001, N'52', 0, 4, N'd:\BSGP_2018\1001\4_264.jpg', N'25-Oct-2018 6:25:49 PM')
+,(53, 1519001, N'53', 0, 4, N'd:\BSGP_2018\1001\4_265.jpg', N'25-Oct-2018 6:25:52 PM')
+,(54, 1519001, N'54', 0, 4, N'd:\BSGP_2018\1001\4_66.jpg', N'25-Oct-2018 6:25:54 PM')
+,(55, 1519001, N'55', 0, 4, N'd:\BSGP_2018\1001\4_67.jpg', N'25-Oct-2018 6:25:57 PM')
+,(56, 1519001, N'56', 0, 4, N'd:\BSGP_2018\1001\4_68.jpg', N'25-Oct-2018 6:25:59 PM')
+,(57, 1519001, N'57', 0, 4, N'd:\BSGP_2018\1001\4_69.jpg', N'25-Oct-2018 6:26:02 PM')
+,(58, 1519001, N'58', 0, 4, N'd:\BSGP_2018\1001\4_70.jpg', N'25-Oct-2018 6:26:05 PM')
+,(59, 1519001, N'59', 0, 4, N'd:\BSGP_2018\1001\4_71.jpg', N'25-Oct-2018 6:26:07 PM')
+,(60, 1519001, N'60', 0, 4, N'd:\BSGP_2018\1001\4_73.jpg', N'25-Oct-2018 6:26:11 PM')
+,(61, 1519001, N'61', 0, 5, N'd:\BSGP_2018\1001\5_74.jpg', N'25-Oct-2018 6:26:13 PM')
+,(62, 1519001, N'62', 0, 5, N'd:\BSGP_2018\1001\5_75.jpg', N'25-Oct-2018 6:26:16 PM')
+,(63, 1519001, N'63', 0, 5, N'd:\BSGP_2018\1001\5_76.jpg', N'25-Oct-2018 6:26:19 PM')
+,(64, 1519001, N'64', 0, 5, N'd:\BSGP_2018\1001\5_77.jpg', N'25-Oct-2018 6:26:21 PM')
+,(65, 1519001, N'65', 0, 5, N'd:\BSGP_2018\1001\5_78.jpg', N'25-Oct-2018 6:26:24 PM')
+,(66, 1519001, N'66', 0, 5, N'd:\BSGP_2018\1001\5_80.jpg', N'25-Oct-2018 6:26:27 PM')
+,(67, 1519001, N'67', 0, 5, N'd:\BSGP_2018\1001\5_81.jpg', N'25-Oct-2018 6:26:29 PM')
+,(68, 1519001, N'68', 0, 5, N'd:\BSGP_2018\1001\5_83.jpg', N'25-Oct-2018 6:26:32 PM')
+,(69, 1519001, N'69', 0, 5, N'd:\BSGP_2018\1001\5_84.jpg', N'25-Oct-2018 6:26:35 PM')
+,(70, 1519001, N'70', 0, 5, N'd:\BSGP_2018\1001\5_87.jpg', N'25-Oct-2018 6:26:38 PM')
+,(71, 1519001, N'71', 0, 5, N'd:\BSGP_2018\1001\5_88.jpg', N'25-Oct-2018 6:26:41 PM')
+,(72, 1519001, N'72', 0, 4, N'd:\BSGP_2018\1001\THR_4_72.jpg', N'25-Oct-2018 6:29:21 PM')
+,(73, 1519001, N'73', 0, 5, N'd:\BSGP_2018\1001\THR_5_79.jpg', N'25-Oct-2018 6:29:25 PM')
+,(74, 1519001, N'74', 0, 5, N'd:\BSGP_2018\1001\THR_5_82.jpg', N'25-Oct-2018 6:29:35 PM')
+,(75, 1519001, N'75', 0, 3, N'd:\BSGP_2018\1001\BLT_3_28.jpg', N'25-Oct-2018 6:29:58 PM')
+,(76, 1519001, N'76', 0, 4, N'd:\BSGP_2018\1001\BLT_4_50.jpg', N'25-Oct-2018 6:30:03 PM')
+,(77, 1519001, N'77', 0, 4, N'd:\BSGP_2018\1001\BLT_4_56.jpg', N'25-Oct-2018 6:30:09 PM')
+,(78, 1519001, N'78', 0, 4, N'd:\BSGP_2018\1001\BLT_4_58.jpg', N'25-Oct-2018 6:30:14 PM')
+,(79, 1519001, N'79', 0, 4, N'd:\BSGP_2018\1001\BLT_5_85.jpg', N'25-Oct-2018 6:30:18 PM')
+,(80, 1519001, N'80', 0, 5, N'd:\BSGP_2018\1001\BLT_5_86.jpg', N'25-Oct-2018 6:30:23 PM')

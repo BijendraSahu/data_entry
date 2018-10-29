@@ -111,6 +111,7 @@ class AdminController extends Controller
             $reg->contact = request('contact');
             $reg->username = request('username');
             $reg->password = md5(request('password'));
+            $reg->is_active = 0;
             $file = $request->file('file_path');
             if ($request->file('file_path') != null) {
                 $destination_path = 'u_img/';

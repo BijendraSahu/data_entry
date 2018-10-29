@@ -17,7 +17,13 @@
 <div class="nav_containner container" id="first" style="display: block;">
     @if($data->id == 1)
         <div class="col-sm-3 img">
-            <img src="{{url('u_img').'/'.$data->image}}" class="img_profile"/>
+            @if(isset($data))
+                <img src="{{url('u_img').'/'.$data->image}}"
+                     class="img_profile"/>
+            @else
+                <img class="img_profile"
+                     src="{{url('assets/images/Male_default.png')}}"/>
+            @endif
         </div>
         <div class="col-sm-3 textbox_containner linemy">
             <form action="{{url('/myadminpost')}}" method="post" id="adminpostForm" enctype="multipart/form-data">
@@ -45,32 +51,6 @@
             <p></p>
             <input type="button" value="Change" onclick="passchange();" class="btn btn-info">
 
-
-        </div>
-        <div class="col-sm-3 textbox_containner">
-            @php
-                $bank = \App\BankDetails::find(1);
-            @endphp
-            <label>Points to Rupee</label>
-            <input type="text" name="point_to_rupee" id="rupee" placeholder="Enter how many points is equals to Rs. 1"
-                   class="form-control required" value="{{$data->point_to_rupee}}"/>
-            <p id="almes"></p>
-            <p></p>
-            <label>Account no</label>
-            <input type="text" name="account_no" placeholder="Enter Account no" id="account_no"
-                   class="form-control required" value="{{$bank->account_no}}"/>
-            <p></p>
-
-            <label>Bank Name</label>
-            <input type="text" name="bank_name" placeholder="Enter Bank Name" id="bank_name"
-                   class="form-control required" value="{{$bank->bank_name}}"/>
-            <p></p>
-
-            <label>IFSC Code</label>
-            <input type="text" name="ifsc" placeholder="Enter Bank Name" id="ifsc"
-                   class="form-control required" value="{{$bank->ifsc_code}}"/>
-            <p></p>
-            <input type="button" value="Update" onclick="Accountchange();" class="btn btn-success">
 
         </div>
     @else

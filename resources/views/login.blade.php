@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Aranea | Login</title>
+    <title>Mitra Data Care | Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
     <link rel="shortcut icon" type="images/png" href="{{url('assets/images/short.png')}}"/>
     <link rel="stylesheet" href="{{url('assets/css/bootstrap.css')}}"/>
@@ -18,14 +18,12 @@
         .login_txt {
             background-color: #fff;
         }
-
         .input-group-addon {
             background-color: #fff !important;
         }
         .errorClass {
             border: 1px solid red;
         }
-
         .errorText {
             font-size: 11px;
             font-weight: bold;
@@ -170,7 +168,7 @@
             <div class="form-group" style="backface-visibility: hidden;">
                 <div class="input-group" style="backface-visibility: hidden;">
                     <input type="text" class="form-control login_txt" placeholder="Type your Username"
-                           style="backface-visibility: hidden;" id="username">
+                           style="backface-visibility: hidden;" id="username" autocomplete="off">
                     <span class="input-group-addon" style="backface-visibility: hidden;">
                                           <i class="glyphicon glyphicon-user" style="backface-visibility: hidden;"></i>
                                       </span>
@@ -179,19 +177,20 @@
             <div class="form-group" style="backface-visibility: hidden;">
                 <div class="input-group" style="backface-visibility: hidden;">
                     <input type="password" class="form-control login_txt" placeholder="Type your password"
-                           style="backface-visibility: hidden;" id="password">
+                           style="backface-visibility: hidden;" id="password" autocomplete="off">
                     <span class="input-group-addon" style="backface-visibility: hidden;">
                                           <i class="glyphicon glyphicon-lock" style="backface-visibility: hidden;"></i>
                                       </span>
                 </div>
             </div>
             <input type="button" class="submit_btn btn btn-primary" value="Log in" onclick="logincheck();"/>
+            <p class="clearfix"></p>
             <input type="button" class="submit_btn btn btn-success" value="Sign Up" onclick="register_here();"/>
         </div>
     </div>
 </div>
 
-<div class="particules" id="particles-js"></div>
+{{--<div class="particules" id="particles-js"></div>--}}
 <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -253,7 +252,9 @@
             }
         });
     }
+
 </script>
+
 <script type="text/javascript" src="{{url('assets/js/Animate_Particules.js')}}"></script>
 
 @if(session()->has('message'))

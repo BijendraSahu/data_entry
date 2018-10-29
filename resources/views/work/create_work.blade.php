@@ -1,110 +1,82 @@
 @extends('admin_master')
 
-@section('title','List of Advertisement')
+@section('title','Start Work')
 
 @section('content')
     <style>
         .ads_img {
-            height: 100px;
-            width: 100px;
+            height: 100%;
+            width: 100%;
         }
     </style>
-    <div class="container-fluid">
-        <div class="container-fluid">
-            <div class="col-sm-6">
+    <div class="row box_containner">
+        <div class="col-sm-12 col-md-12 col-xs-12">
+            <div class="dash_boxcontainner white_boxlist">
+                <div class="upper_basic_heading">
+                    <span class="white_dash_head_txt">
+                         Enter Given Image Details Below
+                      </span>
+                    @if(isset($work_data))
+                        {!! Form::open(['url' => 'save_work', 'class' => 'form-horizontal', 'id'=>'save_work', 'files'=>true]) !!}
+                        <div class="col-sm-5">
+                            {{--<div class='form-group'>--}}
+                            <img src="{{url('').'/'.$work_data->FILENM}}" alt="" class="ads_img">
+                            <input type="hidden" value="{{$work_data->SRID}}" name="data_id" id="data_id">
+                            {{--</div>--}}
+                        </div>
+                        <div class="col-sm-7">
+                            <div class='form-group'>
+                                {!! Form::label('Name', 'Student Name *', ['class' => 'col-sm-3 control-label']) !!}
+                                <div class='col-sm-9'>
+                                    <input type="text" value="{{isset($work_value_s_name)?$work_value_s_name->RVAL:''}}"
+                                           placeholder="Student Name" maxlength="25" name="s_name"
+                                           class="form-control required textWithSpace" id="s_name">
+                                </div>
+                            </div>
+                            <div class='form-group'>
+                                {!! Form::label('Username', 'Father Name *', ['class' => 'col-sm-3 control-label']) !!}
+                                <div class='col-sm-9'>
+                                    <input value="{{isset($work_value_f_name)?$work_value_f_name->RVAL:''}}" type="text"
+                                           placeholder="Father Name" maxlength="25" name="f_name"
+                                           class="form-control required textWithSpace" id="f_name">
+                                </div>
+                            </div>
 
-                <div class='form-group'>
-                    <img src="{{url('')}}" alt="" class="ads_img">
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class='form-group' id="file_link">
-                    {!! Form::label('Name', 'Student Name *', ['class' => 'col-sm-2 control-label']) !!}
-                    <div class='col-sm-10'>
-                        <input type="text" placeholder="Student Name" maxlength="25" name="s_name"
-                               class="form-control required abc textWithSpace" id="s_name">
-                    </div>
-                </div>
-                <div class='form-group'>
-                    {!! Form::label('Username', 'Father Name *', ['class' => 'col-sm-2 control-label']) !!}
-                    <div class='col-sm-10'>
-                        <input type="text" placeholder="Father Name" maxlength="25" name="f_name"
-                               class="form-control required abc textWithSpace" id="f_name">
-                    </div>
+                            {{--<div class='form-group'>--}}
+                            {{--<div class='col-sm-offset-2 col-sm-10'>--}}
+                            {{--{!! Form::submit('Submit', ['class' => 'btn btn-sm btn-primary']) !!}--}}
+                            {{--</div>--}}
+                            {{--</div>--}}
+                        </div>
+                        {!! Form::close() !!}
+                    @else
+                        <div class="col-sm-12">
+                            <span>No Data Available</span>
+                        </div>
+                    @endif
                 </div>
 
-                <div class='form-group'>
-                    <div class='col-sm-offset-2 col-sm-10'>
-                        {!! Form::submit('Submit', ['class' => 'btn btn-sm btn-primary']) !!}
-                    </div>
-                </div>
             </div>
         </div>
     </div>
     <br/>
     <script>
-        function inactive_ads(dis) {
-            var id = $(dis).attr('id');
-            $('#myModal').modal('show');
-            $('#mybody').html('<img height="50px" class="center-block" src="{{ url('assets/images/loading.gif') }}"/>');
-            $('#modal_title').html('Confirm Inactivation');
-            $('#mybody').html('<h5>Are you sure want to Inactivate this Advertisement<h5/>');
-            $('#modalBtn').removeClass('hidden');
-            $('#modalBtn').html('<a class="btn btn-sm btn-danger" href="{{ url('advertisement') }}/' + id +
-                '/inactivate"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Confirm</a>'
-            );
-        }
-
-        function active_ads(dis) {
-            var id = $(dis).attr('id');
-            $('#myModal').modal('show');
-            $('#mybody').html('<img height="50px" class="center-block" src="{{ url('assets/img/loading.gif') }}"/>');
-            $('#modal_title').html('Confirm Activation');
-            $('#mybody').html('<h5>Are you sure want to activate this Advertisement<h5/>');
-            $('#modalBtn').removeClass('hidden');
-            $('#modalBtn').html('<a class="btn btn-sm btn-success" href="{{ url('advertisement') }}/' + id +
-                '/activate"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Confirm</a>'
-            );
-        }
-
-        function edit_ads(dis) {
-            $('#myModal').modal('show');
-            $('#modal_title').html('Edit Advertisement');
-            $('#mybody').html('<img height="50px" class="center-block" src="{{url('assets/images/loading.gif')}}"/>');
-            var id = $(dis).attr('id');
-            var editurl = '{{ url('/') }}' + "/advertisement/" + id + "/edit";
-            $.ajax({
-                type: "GET",
-                contentType: "application/json; charset=utf-8",
-                url: editurl,
-                data: '{"data":"' + id + '"}',
-                success: function (data) {
-                    $('#mybody').html(data);
-                },
-                error: function (xhr, status, error) {
-                    $('#mybody').html(xhr.responseText);
-                    //$('.modal-body').html("Technical Error Occured!");
-                }
-            });
-        }
-
-
-        function add_ads() {
-            $('#myModal').modal('show');
-            $('#modal_title').html('Add New Advertisement');
-            $('#mybody').html('<img height="50px" class="center-block" src="{{url('assets/images/loading.gif')}}"/>');
-            $.ajax({
-                type: "GET",
-                contentType: "application/json; charset=utf-8",
-                url: "{{ url('advertisement/create') }}",
-                success: function (data) {
-                    $('#mybody').html(data);
-                },
-                error: function (xhr, status, error) {
-                    $('#mybody').html(xhr.responseText);
-                }
-            });
-        }
+        $(document).keypress(function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+//                alert('You pressed a "enter" key in somewhere');
+                $('#save_work').submit();
+            }
+        });
+        window.onload = function () {
+            document.getElementById("s_name").focus();
+        };
+        //        $('#someTextBox').keypress(function(event){
+        //            var keycode = (event.keyCode ? event.keyCode : event.which);
+        //            if(keycode == '13'){
+        //                alert('You pressed a "enter" key in textbox');
+        //            }
+        //        });
 
     </script>
 @stop

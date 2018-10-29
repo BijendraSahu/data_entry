@@ -58,4 +58,7 @@
     </div>
 </div>
 {!! Form::close() !!}
+<script>
+    $("form").attr('autocomplete', 'off');
+</script>
 

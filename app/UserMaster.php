@@ -23,7 +23,14 @@ class UserMaster extends Model
 
     public function scopeGetActiveUserMaster($query)
     {
-        return $query->where('is_active', '=', 1)->get();
+//        return $query->where('is_active', '=', 1)->get();
+        return $query->where(['role' => 'Data Entry User'])->get();
+    }
+
+    public function scopeGetActiveAdmin($query)
+    {
+//        return $query->where('is_active', '=', 1)->get();
+        return $query->where(['role' => 'Group Admin'])->get();
     }
 
     public function scopeGetPaidUserMaster($query)
@@ -41,6 +48,12 @@ class UserMaster extends Model
         return $this->belongsTo('App\CityModel', 'city_id');
     }
 
+    public
+    function role_master()
+    {
+        return $this->belongsTo('App\RoleMaster');
+    }
+
     public function activate_by()
     {
         return $this->belongsTo('App\AdminModel', 'activated_by');
@@ -48,7 +61,14 @@ class UserMaster extends Model
 
     public static function checkcontact($c)
     {
-        $user = UserMaster::where(['contact' => $c])->first();
+        $user = UserMaster::where(['username' => $c])->first();
+        if (is_null($user)) return true;
+        else return false;
+    }
+
+    public static function checkUsername($c)
+    {
+        $user = UserMaster::where(['username' => $c])->first();
         if (is_null($user)) return true;
         else return false;
     }

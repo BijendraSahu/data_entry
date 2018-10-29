@@ -36,6 +36,11 @@ Route::get('/logincheck', 'AdminController@logincheck');
 Route::get('registration', 'AdminController@registration');
 Route::post('registration', 'AdminController@save_registration');
 
+Route::get('work_done', 'WorkController@work_done');
+Route::get('view_work_done', 'WorkController@view_work_done');
+Route::get('start_work', 'WorkController@start_work');
+Route::post('save_work', 'WorkController@save_work');
+
 Route::get('gain_type_points', 'AdminController@gain_type_points');
 Route::get('gain_type_points/{id}/edit', 'AdminController@edit_gain_type_points');
 Route::post('gain_type_points/{id}', 'AdminController@update_gain_type_points');
@@ -50,7 +55,8 @@ Route::post('myadminpost', 'SettingController@myadminpost');
 Route::resource('user_master', 'UserMasterController');
 Route::get('activate_with_key/{id}', 'UserMasterController@activate_with_key');
 Route::get('user_master/{id}/delete', 'UserMasterController@destroy');
-Route::post('user_master/{id}/activate', 'UserMasterController@activate');
+//Route::post('user_master/{id}/activate', 'UserMasterController@activate');
+Route::get('user_master/{id}/activate', 'UserMasterController@activate');
 Route::get('user_master/{id}/inactivate', 'UserMasterController@inactivate');
 Route::get('user_master/{id}/empty', 'UserMasterController@empty_point');
 Route::get('user_master/{id}/remind', 'UserMasterController@reminder_points');
