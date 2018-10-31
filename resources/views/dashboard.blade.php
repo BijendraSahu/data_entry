@@ -33,24 +33,24 @@
 
     <section class="box_containner">
         <div class="container-fluid">
+            @php
+                $users =\App\UserMaster::getActiveUserMaster();
+                $admins = \App\UserMaster::getActiveAdmin();
+                $works = \App\SchoolData::where(['IS_OPEN' => 0, 'IS_WORK_DONE' => 0])->count();
+                $workdone = \App\SchoolData::where(['IS_OPEN' => 1, 'IS_WORK_DONE' => 1])->count();
+            @endphp
             @if($_SESSION['admin_master']['role'] == 'Super Admin')
                 <div class="row">
                     <section id="menu1">
                         <div class="home_brics_row">
-                            {{--@php--}}
-                                {{--$franchise =\App\AdminModel::where('id', '>', 1)->count();--}}
-                                {{--$users = \App\UserMaster::getActiveUserMaster();--}}
-                                {{--$active_users = \App\UserMaster::getPaidUserMaster();--}}
-                                {{--$inactive_users = \App\UserMaster::getUnPaidUserMaster();--}}
-                            {{--@endphp--}}
-                            <a href="{{url('franchise')}}">
+                            <a href="{{url('work_done?work_type=incomplete')}}">
                                 <div class="col-sm-3">
                                     <div class="white_brics">
                                         <div class="white_icon_withtxt">
                                             <div class="white_icons_blk white_brics_clr4"><i
                                                         class="mdi mdi-gift"></i></div>
                                             <div class="white_brics_txt">Works</div>
-                                            <div class="white_brics_count">{{0}}</div>
+                                            <div class="white_brics_count">{{$works}}</div>
                                         </div>
                                         <div class="brics_progress white_brics_border_clr4"></div>
                                     </div>
@@ -62,7 +62,7 @@
                                         <div class="white_icon_withtxt">
                                             <div class="white_icons_blk"><i class="mdi mdi-tag"></i></div>
                                             <div class="white_brics_txt">All Users</div>
-                                            <div class="white_brics_count">{{0}}</div>
+                                            <div class="white_brics_count">{{count($users)}}</div>
                                         </div>
                                         <div class="brics_progress white_brics_border_clr1"></div>
                                     </div>
@@ -74,7 +74,7 @@
                                         <div class="white_icon_withtxt">
                                             <div class="white_icons_blk"><i class="mdi mdi-tag"></i></div>
                                             <div class="white_brics_txt">Group Admin</div>
-                                            <div class="white_brics_count">{{0}}</div>
+                                            <div class="white_brics_count">{{count($admins)}}</div>
                                         </div>
                                         <div class="brics_progress white_brics_border_clr1"></div>
                                     </div>
@@ -86,7 +86,7 @@
                                         <div class="white_icon_withtxt">
                                             <div class="white_icons_blk"><i class="mdi mdi-tag"></i></div>
                                             <div class="white_brics_txt">Work Done</div>
-                                            <div class="white_brics_count">{{0}}</div>
+                                            <div class="white_brics_count">{{$workdone}}</div>
                                         </div>
                                         <div class="brics_progress white_brics_border_clr1"></div>
                                     </div>
@@ -103,7 +103,7 @@
                             <div class="white_icon_withtxt">
                                 <div class="white_icons_blk"><i class="mdi mdi-tag"></i></div>
                                 <div class="white_brics_txt">All Users</div>
-                                <div class="white_brics_count">{{0}}</div>
+                                <div class="white_brics_count">{{count($users)}}</div>
                             </div>
                             <div class="brics_progress white_brics_border_clr1"></div>
                         </div>

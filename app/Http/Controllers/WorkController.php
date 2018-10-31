@@ -13,8 +13,13 @@ class WorkController extends Controller
 {
     public function work_done()
     {
-        $work_data = SchoolData::where(['IS_OPEN' => 1, 'IS_WORK_DONE' => 1])->paginate(8);
-        return view('work.view_work')->with(['work_data' => $work_data]);
+        if (request('work_type') == 'incomplete') {
+            $work_data = SchoolData::where(['IS_OPEN' => 0, 'IS_WORK_DONE' => 0])->paginate(8);
+            return view('work.view_work')->with(['work_data' => $work_data]);
+        } else {
+            $work_data = SchoolData::where(['IS_OPEN' => 1, 'IS_WORK_DONE' => 1])->paginate(8);
+            return view('work.view_work')->with(['work_data' => $work_data]);
+        }
     }
 
     public function view_work_done()
@@ -29,6 +34,7 @@ class WorkController extends Controller
             return view('work.view_work_details')->with([$work_data => []]);
         }
     }
+
     public function start_work()
     {
 //        $work_data = SchoolData::where(['IS_OPEN' => 0, 'IS_WORK_DONE' => 0])->get();

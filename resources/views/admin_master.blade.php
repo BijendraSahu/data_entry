@@ -956,7 +956,7 @@
         @endif
         <div class="dash_emp_basic">
             <span class="dash_name">{{ucfirst($_SESSION['admin_master']['name'])}}</span>
-            {{--<span class="dash_designation">Admin</span>--}}
+            <span class="dash_designation">{{$_SESSION['admin_master']['role']}}</span>
         </div>
     </div>
     <ul class="list-group dash_menu_ul">
@@ -1195,7 +1195,7 @@
 @if($errors->any())
     <script type="text/javascript">
         setTimeout(function () {
-            swal("Warning!", "{{$errors->first()}}", "info");
+            warning_noti("Warning!", "{{$errors->first()}}", "info");
         }, 500);
     </script>
 @endif

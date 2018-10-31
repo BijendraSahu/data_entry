@@ -18,8 +18,8 @@
                          List of Work Done
                         {{--<button class="btn btn-default pull-right btn-sm" onclick="exporttoexcel();"><i--}}
                         {{--class="mdi mdi-download"></i> Download Excel</button>--}}
-                        <a href="#" class="btn btn-default btnSet add-user pull-right">
-        <span class="fa fa-plus"></span>&nbsp;Create New User</a>
+                        {{--<a href="#" class="btn btn-default btnSet add-user pull-right">--}}
+        {{--<span class="fa fa-plus"></span>&nbsp;Create New User</a>--}}
                       </span>
                     <table id="example" class="table table-bordered dataTable table-striped" cellspacing="0"
                            width="100%">
