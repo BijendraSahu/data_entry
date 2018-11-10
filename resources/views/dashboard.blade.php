@@ -43,7 +43,7 @@
                 <div class="row">
                     <section id="menu1">
                         <div class="home_brics_row">
-                            <a href="{{url('work_done?work_type=incomplete')}}">
+                            <a href="{{url('works')}}">
                                 <div class="col-sm-3">
                                     <div class="white_brics">
                                         <div class="white_icon_withtxt">
@@ -92,38 +92,74 @@
                                     </div>
                                 </div>
                             </a>
-
                         </div>
                     </section>
                 </div>
             @elseif($_SESSION['admin_master']['role'] == 'Group Admin')
-                <a href="{{url('user_master')}}">
-                    <div class="col-sm-3">
-                        <div class="white_brics">
-                            <div class="white_icon_withtxt">
-                                <div class="white_icons_blk"><i class="mdi mdi-tag"></i></div>
-                                <div class="white_brics_txt">All Users</div>
-                                <div class="white_brics_count">{{count($users)}}</div>
-                            </div>
-                            <div class="brics_progress white_brics_border_clr1"></div>
+                <div class="row">
+                    <section id="menu2">
+                        <div class="home_brics_row">
+                            <a href="{{url('user_master')}}">
+                                <div class="col-sm-3">
+                                    <div class="white_brics">
+                                        <div class="white_icon_withtxt">
+                                            <div class="white_icons_blk"><i class="mdi mdi-tag"></i></div>
+                                            <div class="white_brics_txt">All Users</div>
+                                            <div class="white_brics_count">{{count($users)}}</div>
+                                        </div>
+                                        <div class="brics_progress white_brics_border_clr1"></div>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="{{url('work_done')}}">
+                                <div class="col-sm-3">
+                                    <div class="white_brics">
+                                        <div class="white_icon_withtxt">
+                                            <div class="white_icons_blk"><i class="mdi mdi-tag"></i></div>
+                                            <div class="white_brics_txt">Work Done</div>
+                                            <div class="white_brics_count">{{0}}</div>
+                                        </div>
+                                        <div class="brics_progress white_brics_border_clr1"></div>
+                                    </div>
+                                </div>
+                            </a>
                         </div>
-                    </div>
-                </a>
-                <a href="{{url('work_done')}}">
-                    <div class="col-sm-3">
-                        <div class="white_brics">
-                            <div class="white_icon_withtxt">
-                                <div class="white_icons_blk"><i class="mdi mdi-tag"></i></div>
-                                <div class="white_brics_txt">Work Done</div>
-                                <div class="white_brics_count">{{0}}</div>
-                            </div>
-                            <div class="brics_progress white_brics_border_clr1"></div>
+                    </section>
+                </div>
+            @elseif($_SESSION['admin_master']['role'] == 'Quality Control')
+                <div class="row">
+                    <section id="menu3">
+                        <div class="home_brics_row">
+                            <a href="{{url('works')}}">
+                                <div class="col-sm-3">
+                                    <div class="white_brics">
+                                        <div class="white_icon_withtxt">
+                                            <div class="white_icons_blk"><i class="mdi mdi-tag"></i></div>
+                                            <div class="white_brics_txt">Work Done</div>
+                                            <div class="white_brics_count">{{0}}</div>
+                                        </div>
+                                        <div class="brics_progress white_brics_border_clr1"></div>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="{{url('work_done')}}">
+                                <div class="col-sm-3">
+                                    <div class="white_brics">
+                                        <div class="white_icon_withtxt">
+                                            <div class="white_icons_blk"><i class="mdi mdi-tag"></i></div>
+                                            <div class="white_brics_txt">Work Done</div>
+                                            <div class="white_brics_count">{{0}}</div>
+                                        </div>
+                                        <div class="brics_progress white_brics_border_clr1"></div>
+                                    </div>
+                                </div>
+                            </a>
                         </div>
-                    </div>
-                </a>
+                    </section>
+                </div>
             @else
                 <div class="row">
-                    <section id="menu1">
+                    <section id="menu4">
                         <div class="home_brics_row">
                             {{--@php--}}
                             {{--$inactive_users = \App\UserMaster::getUnPaidUserMaster();--}}
@@ -137,6 +173,18 @@
                                             <div class="white_icons_blk white_brics_clr4"><i
                                                         class="mdi mdi-clipboard-plus"></i></div>
                                             <div class="white_brics_txt">Start Work</div>
+                                        </div>
+                                        <div class="brics_progress white_brics_border_clr4"></div>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="{{url('my_works')}}">
+                                <div class="col-sm-3">
+                                    <div class="white_brics">
+                                        <div class="white_icon_withtxt">
+                                            <div class="white_icons_blk white_brics_clr4"><i
+                                                        class="mdi mdi-clipboard-plus"></i></div>
+                                            <div class="white_brics_txt">My Work</div>
                                         </div>
                                         <div class="brics_progress white_brics_border_clr4"></div>
                                     </div>

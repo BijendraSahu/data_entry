@@ -1,3 +1,7 @@
+@php
+    ini_set('memory_limit', '-1');
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +9,6 @@
     <title>@yield('title')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="shortcut icon" type="images/png" href="{{url('assets/images/short.png')}}"/>
     <link rel="stylesheet" href="{{url('assets/css/bootstrap.css')}}"/>
@@ -30,6 +33,7 @@
     <script src="{{url('assets/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{url('assets/js/dataTables.bootstrap.min.js')}}"></script>
     {{---------------Notification---------------}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{url('assets/css/lobibox.min.css')}}">
     <script src="{{url('assets/js/notifications.min.js')}}"></script>
     <script src="{{url('assets/js/notification-custom-script.js')}}"></script>
@@ -980,6 +984,12 @@
                 </a>
             </li>
             <li class="right_menu_li">
+                <a href="{{url('works')}}">
+                    <i class="dash_arrow mdi mdi-clipboard-plus global_color"></i>
+                    <span class="aside_menu_txt">All Works</span>
+                </a>
+            </li>
+            <li class="right_menu_li">
                 <a href="{{url('work_done')}}">
                     <i class="dash_arrow mdi mdi-clipboard-plus global_color"></i>
                     <span class="aside_menu_txt">Work Done</span>
@@ -1119,7 +1129,26 @@
             {{--</li>--}}
             {{--</ul>--}}
             {{--</li>--}}
-
+        @elseif($_SESSION['admin_master']['role'] == 'Quality Control')
+            <li class="right_menu_li">
+                <a href="{{url('admin')}}">
+                    {{--     <a href="{{url('/userlist')}}">--}}
+                    <i class="dash_arrow mdi mdi-account-multiple global_color"></i>
+                    <span class="aside_menu_txt">Dashboard</span>
+                </a>
+            </li>
+            <li class="right_menu_li">
+                <a href="{{url('works')}}">
+                    <i class="dash_arrow mdi mdi-clipboard-plus global_color"></i>
+                    <span class="aside_menu_txt">All Works</span>
+                </a>
+            </li>
+            <li class="right_menu_li">
+                <a href="{{url('work_done')}}">
+                    <i class="dash_arrow mdi mdi-clipboard-plus global_color"></i>
+                    <span class="aside_menu_txt">Work Done</span>
+                </a>
+            </li>
         @else
             <li class="right_menu_li">
                 <a href="{{url('admin')}}">
@@ -1133,6 +1162,13 @@
                     {{--     <a href="{{url('/userlist')}}">--}}
                     <i class="dash_arrow mdi mdi-account-multiple global_color"></i>
                     <span class="aside_menu_txt">Start Work</span>
+                </a>
+            </li>
+            <li class="right_menu_li">
+                <a href="{{url('my_works')}}">
+                    {{--     <a href="{{url('/userlist')}}">--}}
+                    <i class="dash_arrow mdi mdi-account-multiple global_color"></i>
+                    <span class="aside_menu_txt">My Work</span>
                 </a>
             </li>
 

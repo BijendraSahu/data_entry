@@ -46,9 +46,9 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if (isset($exception)) {
-            return view('welcome');
-        }
-//        return parent::render($request, $exception);
+//        if (isset($exception)) {
+//            return view('welcome');
+//        }
+        return parent::render($request, $exception);
     }
 }

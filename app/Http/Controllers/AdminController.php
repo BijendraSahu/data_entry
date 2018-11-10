@@ -86,9 +86,13 @@ class AdminController extends Controller
         $username = request('username');
         $password = md5(request('password'));
         $user = LoginModel::where(['username' => $username, 'password' => $password])->first();
-        if ($user != null) {
-            $_SESSION['admin_master'] = $user;
-            return 'success';
+        if (isset($user)) {
+            if ($user->is_active == 1) {
+                $_SESSION['admin_master'] = $user;
+                return 'success';
+            } else {
+                return 'unautherised';
+            }
         } else {
             /*return redirect('/adminlogin')->withInput()->withErrors(array('message' => 'UserName or password Invalid'));*/
             return 'fail';
@@ -109,6 +113,8 @@ class AdminController extends Controller
             $reg = new AdminModel();
             $reg->name = request('name');
             $reg->contact = request('contact');
+            $reg->paytm_no = request('paytm_no');
+            $reg->email = request('email');
             $reg->username = request('username');
             $reg->password = md5(request('password'));
             $reg->is_active = 0;

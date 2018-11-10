@@ -11,22 +11,30 @@
     {{--@if($errors->any())--}}
     {{--<div role='alert' id='alert' class='alert alert-danger'>{{$errors->first()}}</div>--}}
     {{--@endif--}}
+
+
+    {{--@php--}}
+    {{--$data = DB::selectOne("SELECT * FROM `datasample` WHERE ID = 1");--}}
+    {{--@endphp--}}
+    {{--<img src="data:image/png;base64,{{ chunk_split(base64_encode($data->IMG)) }}" height="100" width="100">--}}
+
+
     <div class="row box_containner">
         <div class="col-sm-12 col-md-12 col-xs-12">
             <div class="dash_boxcontainner white_boxlist">
                 <div class="upper_basic_heading"><span class="white_dash_head_txt">
-                         List of Work Done
+                         List of Works
                         {{--<button class="btn btn-default pull-right btn-sm" onclick="exporttoexcel();"><i--}}
                         {{--class="mdi mdi-download"></i> Download Excel</button>--}}
                         {{--<a href="#" class="btn btn-default btnSet add-user pull-right">--}}
-        {{--<span class="fa fa-plus"></span>&nbsp;Create New User</a>--}}
+                        {{--<span class="fa fa-plus"></span>&nbsp;Create New User</a>--}}
                       </span>
                     <table id="example" class="table table-bordered dataTable table-striped" cellspacing="0"
                            width="100%">
                         <thead>
                         <tr class="bg-info">
-                            <th class="hidden">Id</th>
                             <th class="options">OPTIONS</th>
+                            <th>WORK ID</th>
                             <th>SHID</th>
                             <th>FRMID</th>
                             <th>FILENM</th>
@@ -40,8 +48,7 @@
                                 {{--$user = DB::selectOne("SELECT * FROM users where id in (select reffer_by from reffer where reffer_to = $user_master->id)");--}}
                                 {{--@endphp--}}
                                 <tr>
-                                    <td class="hidden">{{$work_dat->SRID}}</td>
-                                    <td id="{{$work_dat->SRID}}">
+                                    <td id="{{$work_dat->ID}}">
                                         {{--<a href="#" id="{{$work_dat->id}}" onclick="edit_user(this)"--}}
                                         {{--class="btn btn-sm btn-default edit-user_"--}}
                                         {{--title="Edit User" data-toggle="tooltip" data-placement="top">--}}
@@ -60,17 +67,18 @@
 
                                         {{--@endif--}}
                                     </td>
+                                    <td>{{$work_dat->ID}}</td>
                                     {{--<td>{{$work_dat->rc}}</td>--}}
                                     <td>{{$work_dat->SHID}}</td>
                                     <td>{{$work_dat->FRMID}}</td>
                                     <td>{{$work_dat->FILENM}}</td>
-                                    <td>{{isset($work_dat->WORK_DONE_BY)?$work_dat->work_by->name.'-'.$work_dat->work_by->contact:'-'}}</td>
+                                    <td>{{$work_dat->WORK_DONE_BY != 0?$work_dat->work_by->name.'-'.$work_dat->work_by->contact:'-'}}</td>
                                 </tr>
                             @endforeach
                         @endif
                         </tbody>
                     </table>
-                    {{$work_data->links()}}
+{{--                    {{$work_data->links()}}--}}
                 </div>
             </div>
         </div>

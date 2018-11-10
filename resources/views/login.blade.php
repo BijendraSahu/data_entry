@@ -13,17 +13,25 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="{{url('assets/js/jquery-3.2.1.min.js')}}"></script>
     <script src="{{url('assets/js/bootstrap.min.js')}}"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    {{---------------Notification---------------}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{url('assets/css/lobibox.min.css')}}">
+    <script src="{{url('assets/js/notifications.min.js')}}"></script>
+    <script src="{{url('assets/js/notification-custom-script.js')}}"></script>
+    {{---------------Notification---------------}}
     <style type="text/css">
         .login_txt {
             background-color: #fff;
         }
+
         .input-group-addon {
             background-color: #fff !important;
         }
+
         .errorClass {
             border: 1px solid red;
         }
+
         .errorText {
             font-size: 11px;
             font-weight: bold;
@@ -229,8 +237,9 @@
         $.get('{{url('logincheck')}}', {username: username, password: password}, function (data) {
             if (data == 'success') {
                 window.location.href = '{{url('/admin')}}';
-            }
-            else {
+            } else if (data == 'unautherised') {
+                warning_noti("Your account is not activated yet please contact to administrator to activate your account");
+            } else {
                 $('#errorsec').addClass("alert alert-danger").html('Username or Password Invalid');
 
             }
@@ -255,13 +264,13 @@
 
 </script>
 
-<script type="text/javascript" src="{{url('assets/js/Animate_Particules.js')}}"></script>
+{{--<script type="text/javascript" src="{{url('assets/js/Animate_Particules.js')}}"></script>--}}
 
 @if(session()->has('message'))
     <script type="text/javascript">
         setTimeout(function () {
             {{--            ShowSuccessPopupMsg('{{ session()->get('message') }}');--}}
-            swal("Success!", "{{ session()->get('message') }}", "success");
+            success_noti("{{ session()->get('message') }}");
 
         }, 500);
 
@@ -271,7 +280,7 @@
 @if($errors->any())
     <script type="text/javascript">
         setTimeout(function () {
-            swal("Warning!", "{{$errors->first()}}", "info");
+            warning_noti("{{$errors->first()}}");
         }, 500);
     </script>
 @endif

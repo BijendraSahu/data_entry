@@ -16,8 +16,8 @@
             <div class="dash_boxcontainner white_boxlist">
                 <div class="upper_basic_heading"><span class="white_dash_head_txt">
                          List of All Users
-                         {{--<button class="btn btn-default pull-right btn-sm" onclick="exporttoexcel();"><i--}}
-                                     {{--class="mdi mdi-download"></i> Download Excel</button>--}}
+                        {{--<button class="btn btn-default pull-right btn-sm" onclick="exporttoexcel();"><i--}}
+                        {{--class="mdi mdi-download"></i> Download Excel</button>--}}
                         <a href="#" class="btn btn-default btnSet add-user pull-right">
         <span class="fa fa-plus"></span>&nbsp;Create New User</a>
                       </span>
@@ -28,12 +28,13 @@
                             <th class="hidden">Id</th>
                             <th class="options">Options</th>
                             <th>Profile</th>
-                            {{--<th>Referral Code</th>--}}
+                            <th>User Id</th>
                             <th>Name</th>
                             <th>Contact</th>
                             {{--<th>Paytm No</th>--}}
                             <th>Username</th>
                             <th>Role</th>
+                            <th>Work Count</th>
                             <th>Active Status</th>
                             <th>Joining Date</th>
                         </tr>
@@ -41,9 +42,9 @@
                         <tbody>
                         @if(count($user_masters)>0)
                             @foreach($user_masters as $user_master)
-                                {{--@php--}}
-                                {{--$user = DB::selectOne("SELECT * FROM users where id in (select reffer_by from reffer where reffer_to = $user_master->id)");--}}
-                                {{--@endphp--}}
+                                @php
+                                    $work_count = \App\SchoolData::where(['IS_WORK_DONE' => 1,'WORK_DONE_BY' =>$user_master->id])->count();
+                                @endphp
                                 <tr>
                                     <td class="hidden">{{$user_master->id}}</td>
                                     <td id="{{$user_master->id}}">
@@ -65,13 +66,13 @@
 
                                         @endif
                                         {{--<a href="#" id="{{$user_master->id}}" onclick="empty_user(this)"--}}
-                                           {{--class="btn btn-sm btn-danger"--}}
-                                           {{--title="Mark as empty" data-toggle="tooltip" data-placement="top">--}}
-                                            {{--<span class="mdi mdi-thumb-down"></span></a>--}}
+                                        {{--class="btn btn-sm btn-danger"--}}
+                                        {{--title="Mark as empty" data-toggle="tooltip" data-placement="top">--}}
+                                        {{--<span class="mdi mdi-thumb-down"></span></a>--}}
                                         {{--<a href="#" id="{{$user_master->id}}" onclick="remind_user(this)"--}}
-                                           {{--class="btn btn-sm btn-info"--}}
-                                           {{--title="Remind user for payment" data-toggle="tooltip" data-placement="top">--}}
-                                            {{--<span class="mdi mdi-remote"></span></a>--}}
+                                        {{--class="btn btn-sm btn-info"--}}
+                                        {{--title="Remind user for payment" data-toggle="tooltip" data-placement="top">--}}
+                                        {{--<span class="mdi mdi-remote"></span></a>--}}
 
                                     </td>
                                     <td>
@@ -86,11 +87,12 @@
 
                                         </div>
                                     </td>
-                                    {{--<td>{{$user_master->rc}}</td>--}}
+                                    <td>{{$user_master->id}}</td>
                                     <td>{{$user_master->name}}</td>
                                     <td>{{$user_master->contact}}</td>
                                     <td>{{$user_master->username}}</td>
                                     <td>{{$user_master->role}}</td>
+                                    <td>{{$work_count}}</td>
                                     {{--<td>{{$user_master->paytm_contact}}</td>--}}
                                     {{--<td>{{$user_master->points}}</td>--}}
                                     {{--<td>--}}
@@ -188,57 +190,57 @@
 
         });
         {{--$(".edit-user_").click(function () {--}}
-            {{--$('#myModal').modal('show');--}}
-            {{--$('.modal-title').html('Edit User');--}}
-            {{--$('.modal-body').html('<img height="50px" class="center-block" src="{{url('assets/img/loading.gif')}}"/>');--}}
+        {{--$('#myModal').modal('show');--}}
+        {{--$('.modal-title').html('Edit User');--}}
+        {{--$('.modal-body').html('<img height="50px" class="center-block" src="{{url('assets/img/loading.gif')}}"/>');--}}
 
-            {{--var id = $(this).attr('id');--}}
-            {{--var editurl = '{{ url('/') }}' + "/user_master/" + id + "/edit";--}}
-            {{--$.ajax({--}}
-                {{--type: "GET",--}}
-                {{--contentType: "application/json; charset=utf-8",--}}
-                {{--url: editurl,--}}
-                {{--data: '{"data":"' + id + '"}',--}}
-                {{--success: function (data) {--}}
-                    {{--$('.modal-body').html(data);--}}
-                {{--},--}}
-                {{--error: function (xhr, status, error) {--}}
-                    {{--$('.modal-body').html(xhr.responseText);--}}
-                    {{--//$('.modal-body').html("Technical Error Occured!");--}}
-                {{--}--}}
-            {{--});--}}
+        {{--var id = $(this).attr('id');--}}
+        {{--var editurl = '{{ url('/') }}' + "/user_master/" + id + "/edit";--}}
+        {{--$.ajax({--}}
+        {{--type: "GET",--}}
+        {{--contentType: "application/json; charset=utf-8",--}}
+        {{--url: editurl,--}}
+        {{--data: '{"data":"' + id + '"}',--}}
+        {{--success: function (data) {--}}
+        {{--$('.modal-body').html(data);--}}
+        {{--},--}}
+        {{--error: function (xhr, status, error) {--}}
+        {{--$('.modal-body').html(xhr.responseText);--}}
+        {{--//$('.modal-body').html("Technical Error Occured!");--}}
+        {{--}--}}
+        {{--});--}}
         {{--});--}}
 
 
         {{--function active_user(dis) {--}}
-            {{--var id = $(dis).attr('id');--}}
-            {{--$('#myModal').modal('show');--}}
-            {{--$('#mybody').html('<img height="50px" class="center-block" src="{{ url('assets/img/loading.gif') }}"/>');--}}
-            {{--$('#modal_title').html('Confirm Activation');--}}
-            {{--$('#mybody').html('<h5>Are you sure want to activate/paid this user<h5/>');--}}
-            {{--$('#modalBtn').removeClass('hidden');--}}
-            {{--$('#modalBtn').html('<a class="btn btn-sm btn-success" href="{{ url('user_master') }}/' + id +--}}
-                {{--'/activate"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Confirm</a>'--}}
-            {{--);--}}
-            {{--$('#myModal').modal('show');--}}
-            {{--$('#modal_title').html('Activate User');--}}
-            {{--$('#mybody').html('<img height="50px" class="center-block" src="{{url('assets/img/loading.gif')}}"/>');--}}
+        {{--var id = $(dis).attr('id');--}}
+        {{--$('#myModal').modal('show');--}}
+        {{--$('#mybody').html('<img height="50px" class="center-block" src="{{ url('assets/img/loading.gif') }}"/>');--}}
+        {{--$('#modal_title').html('Confirm Activation');--}}
+        {{--$('#mybody').html('<h5>Are you sure want to activate/paid this user<h5/>');--}}
+        {{--$('#modalBtn').removeClass('hidden');--}}
+        {{--$('#modalBtn').html('<a class="btn btn-sm btn-success" href="{{ url('user_master') }}/' + id +--}}
+        {{--'/activate"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Confirm</a>'--}}
+        {{--);--}}
+        {{--$('#myModal').modal('show');--}}
+        {{--$('#modal_title').html('Activate User');--}}
+        {{--$('#mybody').html('<img height="50px" class="center-block" src="{{url('assets/img/loading.gif')}}"/>');--}}
 
-            {{--var id = $(dis).attr('id');--}}
-            {{--var editurl = '{{ url('activate_with_key').'/' }}' + id;--}}
-            {{--$.ajax({--}}
-                {{--type: "GET",--}}
-                {{--contentType: "application/json; charset=utf-8",--}}
-                {{--url: editurl,--}}
-                {{--data: '{"data":"' + id + '"}',--}}
-                {{--success: function (data) {--}}
-                    {{--$('#mybody').html(data);--}}
-                {{--},--}}
-                {{--error: function (xhr, status, error) {--}}
-                    {{--$('#mybody').html(xhr.responseText);--}}
-                    {{--//$('.modal-body').html("Technical Error Occured!");--}}
-                {{--}--}}
-            {{--});--}}
+        {{--var id = $(dis).attr('id');--}}
+        {{--var editurl = '{{ url('activate_with_key').'/' }}' + id;--}}
+        {{--$.ajax({--}}
+        {{--type: "GET",--}}
+        {{--contentType: "application/json; charset=utf-8",--}}
+        {{--url: editurl,--}}
+        {{--data: '{"data":"' + id + '"}',--}}
+        {{--success: function (data) {--}}
+        {{--$('#mybody').html(data);--}}
+        {{--},--}}
+        {{--error: function (xhr, status, error) {--}}
+        {{--$('#mybody').html(xhr.responseText);--}}
+        {{--//$('.modal-body').html("Technical Error Occured!");--}}
+        {{--}--}}
+        {{--});--}}
         {{--}--}}
         function edit_user(dis) {
             $('#myModal').modal('show');

@@ -23,15 +23,18 @@ class UserMasterController extends Controller
     {
         if (request('type') == 'user') {
             return view('user.view_user_master')->with('user_masters', UserMaster::getActiveUserMaster());
-        } else {
+        } else if (request('type') == 'admin') {
             return view('user.view_user_master')->with('user_masters', UserMaster::getActiveAdmin());
+        } else {
+          return redirect('user_master?type=user');
         }
+
     }
 
     public function create()
     {
-        $role_masters = RoleMaster::getRoleDropdown();
-        return view('user.create_user_master')->with(['role_masters' => $role_masters]);
+//        $role_masters = RoleMaster::getRoleDropdown();
+        return view('user.create_user_master');
     }
 
     public function store(Request $request)
@@ -43,18 +46,21 @@ class UserMasterController extends Controller
         $user = new UserMaster();
         $user->name = request('name');
         $user->contact = request('contact');
+        $user->paytm_no = request('paytm_no');
+        $user->email = request('email');
         $user->username = request('username');
         $user->password = md5(request('password'));
-        $user->role_master_id = request('role_master_id');
+        $user->role = request('role');
+        $user->created_time = Carbon::now('Asia/Kolkata');
         $user->save();
         return Redirect::back()->with('message', 'User has been added...!');
     }
 
     public function edit($id)
     {
-        $role_masters = RoleMaster::getRoleDropdown();
+//        $role_masters = RoleMaster::getRoleDropdown();
         $user_master = UserMaster::find($id);
-        return view('user.edit_user_master')->with(['user_master' => $user_master, 'role_masters' => $role_masters]);
+        return view('user.edit_user_master')->with(['user_master' => $user_master]);
     }
 
     public function update($id, Request $request)
@@ -62,8 +68,10 @@ class UserMasterController extends Controller
 
         $user_master = UserMaster::find($id);
         $user_master->name = request('name');
+        $user_master->paytm_no = request('paytm_no');
+        $user_master->email = request('email');
         $user_master->contact = request('contact');
-        $user_master->role_master_id = request('role_master_id');
+        $user_master->role = request('role');
         $user_master->save();
         return redirect('/user_master')->with('message', 'User has been updated...!');
     }

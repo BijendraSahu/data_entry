@@ -4,6 +4,8 @@ ALTER TABLE `tbldata` ADD `WORK_DONE_BY` INT NULL DEFAULT NULL COMMENT 'User Id 
 
 ALTER TABLE `users` CHANGE `role_master_id` `role` ENUM('Super Admin','Group Admin','Data Entry User') NOT NULL DEFAULT 'Data Entry User';
 
+ALTER TABLE `datasample` ADD PRIMARY KEY(`ID`);
+
 
 
 INSERT INTO `tbldata`(`SRID`, `SHID`, `FRMID`, `DUPID`, `TESTID`, `FILENM`, `READTIME`) VALUES(1, 1519001, N'1', 0, 2, N'd:\BSGP_2018\1001\2_213.jpg', N'25-Oct-2018 6:23:42 PM')

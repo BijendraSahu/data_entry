@@ -6,9 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class SchoolData extends Model
 {
-    protected $table = 'tbldata';
+//    protected $table = 'tbldata';
+    protected $table = 'datasample';
     public $timestamps = false;
-    protected $primaryKey = 'SRID';
+    protected $primaryKey = 'ID';
 
 
     public function work_by()
