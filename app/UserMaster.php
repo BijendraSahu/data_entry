@@ -24,7 +24,11 @@ class UserMaster extends Model
     public function scopeGetActiveUserMaster($query)
     {
 //        return $query->where('is_active', '=', 1)->get();
-        return $query->where(['role' => 'Data Entry User'])->get();
+        if ($_SESSION['admin_master']->role == 'Super Admin') {
+            return $query->where(['role' => 'Data Entry User'])->get();
+        } else {
+            return $query->where(['role' => 'Data Entry User', 'activated_by' => $_SESSION['admin_master']->id])->get();
+        }
     }
 
     public function scopeGetActiveAdmin($query)

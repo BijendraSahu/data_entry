@@ -42,9 +42,19 @@
                         <tbody>
                         @if(count($user_masters)>0)
                             @foreach($user_masters as $user_master)
-                                @php
-                                    $work_count = \App\SchoolData::where(['IS_WORK_DONE' => 1,'WORK_DONE_BY' =>$user_master->id])->count();
-                                @endphp
+                                @if ($user_master->role == 'Group Admin')
+                                    @php
+                                        $Userswork = DB::selectOne("SELECT COUNT(ID) as work_done FROM `datasample` WHERE
+                                        WORK_DONE_BY in (SELECT id from users WHERE users.activated_by =
+                                        '$user_master->id')");
+                                    $work_count = $Userswork->work_done;
+                                    @endphp
+                                @else
+                                    @php
+                                        $work_count = \App\SchoolData::where(['IS_WORK_DONE' => 1,'WORK_DONE_BY'=>$user_master->id])->count();
+                                    @endphp
+
+                                @endif
                                 <tr>
                                     <td class="hidden">{{$user_master->id}}</td>
                                     <td id="{{$user_master->id}}">
@@ -107,7 +117,8 @@
                                         @if($user_master->is_active == 1)
                                             <p class="bg-success">Active</p>
                                         @else
-                                            <p class="bg-danger">InActive</p>
+                                            <p class="bg-danger">
+                                                InActive {{$user_master->is_block == 1 ? 'Block' : ''}}</p>
 
                                         @endif
                                     </td>
@@ -127,7 +138,7 @@
             $('#myModal').modal('show');
             $('#mybody').html('<img height="50px" class="center-block" src="{{ url('assets/img/loading.gif') }}"/>');
             $('#modal_title').html('Confirm Inactivation');
-            $('#mybody').html('<h5>Are you sure want to Inactivate/unpaid this user<h5/>');
+            $('#mybody').html('<h5>Are you sure want to Inactivate this user<h5/>');
             $('#modalBtn').removeClass('hidden');
             $('#modalBtn').html('<a class="btn btn-sm btn-danger" href="{{ url('user_master') }}/' + id +
                 '/inactivate"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Confirm</a>'
@@ -173,7 +184,7 @@
             $('#myModal').modal('show');
             $('#modal_title').html('Add New User');
             $('#mybody').html('<img height="50px" class="center-block" src="{{url('assets/img/loading.gif')}}"/>');
-            //alert(id);
+//alert(id);
             $.ajax({
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
@@ -184,7 +195,7 @@
                 },
                 error: function (xhr, status, error) {
                     $('#mybody').html(xhr.responseText);
-                    //$('.modal-body').html("Technical Error Occured!");
+//$('.modal-body').html("Technical Error Occured!");
                 }
             });
 
@@ -258,7 +269,7 @@
                 },
                 error: function (xhr, status, error) {
                     $('#mybody').html(xhr.responseText);
-                    //$('.modal-body').html("Technical Error Occured!");
+//$('.modal-body').html("Technical Error Occured!");
                 }
             });
         }

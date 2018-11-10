@@ -36,9 +36,23 @@
             @php
                 $users =\App\UserMaster::getActiveUserMaster();
                 $admins = \App\UserMaster::getActiveAdmin();
-                $works = \App\SchoolData::where(['IS_OPEN' => 0, 'IS_WORK_DONE' => 0])->count();
-                $workdone = \App\SchoolData::where(['IS_OPEN' => 1, 'IS_WORK_DONE' => 1])->count();
+                $works = \App\SchoolData::where(['IS_WORK_DONE' => 0])->count();
             @endphp
+            @if ($_SESSION['admin_master']['role'] == 'Super Admin' || $_SESSION['admin_master']['role'] == 'Quality Control')
+                @php
+                    $workdone = \App\SchoolData::where(['IS_WORK_DONE' => 1])->count();
+                @endphp
+            @elseif ($_SESSION['admin_master']['role'] == 'Group Admin')
+                @php
+                    $login_id = $_SESSION['admin_master']['id'];
+                        $workdone = DB::selectOne("SELECT COUNT(ID) as work_done FROM `datasample` WHERE WORK_DONE_BY in (SELECT id from users WHERE users.activated_by = '$login_id')")
+                @endphp
+            @else
+                @php
+                    $login_id = $_SESSION['admin_master']['id'];
+                        $workdone = \App\SchoolData::where(['IS_WORK_DONE' => 1,'WORK_DONE_BY'=>$login_id])->count();
+                @endphp
+            @endif
             @if($_SESSION['admin_master']['role'] == 'Super Admin')
                 <div class="row">
                     <section id="menu1">
@@ -117,7 +131,7 @@
                                         <div class="white_icon_withtxt">
                                             <div class="white_icons_blk"><i class="mdi mdi-tag"></i></div>
                                             <div class="white_brics_txt">Work Done</div>
-                                            <div class="white_brics_count">{{0}}</div>
+                                            <div class="white_brics_count">{{$workdone->work_done}}</div>
                                         </div>
                                         <div class="brics_progress white_brics_border_clr1"></div>
                                     </div>
@@ -135,8 +149,8 @@
                                     <div class="white_brics">
                                         <div class="white_icon_withtxt">
                                             <div class="white_icons_blk"><i class="mdi mdi-tag"></i></div>
-                                            <div class="white_brics_txt">Work Done</div>
-                                            <div class="white_brics_count">{{0}}</div>
+                                            <div class="white_brics_txt">Works</div>
+                                            <div class="white_brics_count">{{$works}}</div>
                                         </div>
                                         <div class="brics_progress white_brics_border_clr1"></div>
                                     </div>
@@ -148,7 +162,7 @@
                                         <div class="white_icon_withtxt">
                                             <div class="white_icons_blk"><i class="mdi mdi-tag"></i></div>
                                             <div class="white_brics_txt">Work Done</div>
-                                            <div class="white_brics_count">{{0}}</div>
+                                            <div class="white_brics_count">{{$workdone}}</div>
                                         </div>
                                         <div class="brics_progress white_brics_border_clr1"></div>
                                     </div>
@@ -185,6 +199,7 @@
                                             <div class="white_icons_blk white_brics_clr4"><i
                                                         class="mdi mdi-clipboard-plus"></i></div>
                                             <div class="white_brics_txt">My Work</div>
+                                            <div class="white_brics_count">{{$workdone}}</div>
                                         </div>
                                         <div class="brics_progress white_brics_border_clr4"></div>
                                     </div>

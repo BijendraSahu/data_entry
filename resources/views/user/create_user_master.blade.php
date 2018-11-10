@@ -2,7 +2,7 @@
 @if($errors->any())
     <div role='alert' id='alert' class='alert alert-danger'>{{$errors->first()}}</div>
 @endif
-{!! Form::open(['url' => 'user_master', 'class' => 'form-horizontal', 'id'=>'user_master']) !!}
+{!! Form::open(['url' => 'post_user_master', 'class' => 'form-horizontal', 'id'=>'user_master']) !!}
 <div class="container-fluid">
     <div class="container-fluid">
         <div class="col-sm-6">

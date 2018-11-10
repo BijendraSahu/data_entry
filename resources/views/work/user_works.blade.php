@@ -29,11 +29,11 @@
                                 {{--@endphp--}}
                                 <tr>
                                     <td id="{{$work_dat->ID}}">
-                                        {{--<a href="#" id="{{$work_dat->id}}" onclick="edit_user(this)"--}}
-                                        {{--class="btn btn-sm btn-default edit-user_"--}}
-                                        {{--title="Edit User" data-toggle="tooltip" data-placement="top">--}}
-                                        {{--<span class="fa fa-pencil"></span></a>--}}
-                                        {{--@if($work_dat->is_active == 1)--}}
+                                        <a href="#" id="{{$work_dat->SRID}}" onclick="edit_work(this)"
+                                           class="btn btn-sm btn-default edit-user_"
+                                           title="Edit User" data-toggle="tooltip" data-placement="top">
+                                            <span class="fa fa-pencil"></span></a>
+                                        {{--                                        @if($work_dat->is_active == 1)--}}
                                         {{--<a href="#" id="{{$work_dat->id}}" onclick="inactive_user(this)"--}}
                                         {{--class="btn btn-sm btn-danger"--}}
                                         {{--title="Mark as inactive" data-toggle="tooltip"--}}
@@ -65,6 +65,26 @@
     </div>
     <script>
         function view_work(dis) {
+            $('#myModal').modal('show');
+            $('#modal_title').html('View Work');
+            $('#mybody').html('<img height="50px" class="center-block" src="{{url('assets/images/loading.gif')}}"/>');
+            var id = $(dis).attr('id');
+            var editurl = '{{ url('view_work_done') }}';
+            $.ajax({
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                url: editurl,
+                data: {work_id: id},
+                success: function (data) {
+                    $('#mybody').html(data);
+                },
+                error: function (xhr, status, error) {
+                    $('#mybody').html(xhr.responseText);
+                    //$('.modal-body').html("Technical Error Occured!");
+                }
+            });
+        }
+        function edit_work(dis) {
             $('#myModal').modal('show');
             $('#modal_title').html('View Work');
             $('#mybody').html('<img height="50px" class="center-block" src="{{url('assets/images/loading.gif')}}"/>');

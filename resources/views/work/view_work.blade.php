@@ -29,7 +29,8 @@
                         {{--<a href="#" class="btn btn-default btnSet add-user pull-right">--}}
                         {{--<span class="fa fa-plus"></span>&nbsp;Create New User</a>--}}
                       </span>
-                    <table id="example" class="table table-bordered dataTable table-striped" cellspacing="0"
+                    <table id="{{isset($group)?'example':''}}" class="table table-bordered dataTable table-striped"
+                           cellspacing="0"
                            width="100%">
                         <thead>
                         <tr class="bg-info">
@@ -72,13 +73,25 @@
                                     <td>{{$work_dat->SHID}}</td>
                                     <td>{{$work_dat->FRMID}}</td>
                                     <td>{{$work_dat->FILENM}}</td>
-                                    <td>{{$work_dat->WORK_DONE_BY != 0?$work_dat->work_by->name.'-'.$work_dat->work_by->contact:'-'}}</td>
+                                    <td>
+                                        @if(!isset($group))
+                                            {{$work_dat->WORK_DONE_BY != 0?$work_dat->work_by->name.'-'.$work_dat->work_by->contact:'-'}}
+
+                                        @else
+                                            @php
+                                                $wo = \App\SchoolData::find($work_dat->ID);
+                                            @endphp
+                                            {{$wo->WORK_DONE_BY != 0?$wo->work_by->name.'-'.$wo->work_by->contact:'-'}}
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach
                         @endif
                         </tbody>
                     </table>
-{{--                    {{$work_data->links()}}--}}
+                    @if(!isset($group))
+                        {{$work_data->links()}}
+                    @endif
                 </div>
             </div>
         </div>

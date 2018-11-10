@@ -52,6 +52,7 @@ class UserMasterController extends Controller
         $user->password = md5(request('password'));
         $user->role = request('role');
         $user->created_time = Carbon::now('Asia/Kolkata');
+        $user->activated_by = $_SESSION['admin_master']->id;
         $user->save();
         return Redirect::back()->with('message', 'User has been added...!');
     }
@@ -128,16 +129,18 @@ class UserMasterController extends Controller
     {
         $user_master = UserMaster::find($id);
         $user_master->is_active = 0;
+        $user_master->is_block = 1;
         $user_master->save();
-        return redirect('/user_master')->with('message', 'User is now inactivated...User cannot login now!');
+        return redirect('user_master?type=user')->with('message', 'User is now inactivated...User cannot login now!');
     }
 
     public function allow_login($id)
     {
         $user_master = UserMaster::find($id);
         $user_master->is_active = 1;
+        $user_master->is_block = 0;
         $user_master->save();
-        return redirect('/user_master')->with('message', 'User is now activated...User can login now!');
+        return redirect('user_master?type=user')->with('message', 'User is now activated...User can login now!');
     }
 
 //
@@ -157,6 +160,7 @@ class UserMasterController extends Controller
 //                $key->save();
         $user_master = UserMaster::find($id);
         $user_master->is_active = 1;
+        $user_master->is_block = 1;
         $user_master->activated_by = $_SESSION['admin_master']->id;
         $user_master->save();
 //                $title = "Account Activation Successful";
@@ -164,7 +168,7 @@ class UserMasterController extends Controller
 //                if (isset($user_master->token)) {
 //                    AdminModel::getNotification($user_master->token, $title, $message);
 //                }
-        return redirect('user_master')->with('message', 'User is now activated');
+        return redirect('user_master?type=user')->with('message', 'User is now activated');
 //            } else {
 //                return Redirect::back()->withInput()->withErrors("You don't have enough key to activate this user");
 //            }
@@ -177,9 +181,10 @@ class UserMasterController extends Controller
     {
         $user_master = UserMaster::find($id);
         $user_master->is_active = 0;
+        $user_master->is_block = 1;
 //        $user_master->activated_by = $_SESSION['admin_master']->id;
         $user_master->save();
-        return redirect('/user_master')->with('message', 'User is now inactivated...');
+        return redirect('user_master?type=user')->with('message', 'User is now inactivated...');
     }
 
     public function empty_point($id)
